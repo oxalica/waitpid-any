@@ -1,4 +1,4 @@
-# waitpid-any: Wait for any PID, an extension to [waitpid(2)].
+# waitpid-any: Wait for any PID
 
 [![crates.io](https://img.shields.io/crates/v/waitpid-any)](https://crates.io/crates/waitpid-any)
 [![docs.rs](https://img.shields.io/docsrs/waitpid-any)](https://docs.rs/waitpid-any)
