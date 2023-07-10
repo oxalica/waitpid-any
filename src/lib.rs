@@ -3,8 +3,9 @@
 //! [`waitpid(2)`](https://pubs.opengroup.org/onlinepubs/9699919799/functions/wait.html) can only
 //! be used to wait for direct child processes, or it fails immediately.
 //!
-//! This crate provides a way to wait for the exit of any process, not necessarily child processes.
-//! Due to platform limitations, the exit reason and status codes still cannot be retrieved.
+//! This crate provides a extention to wait for the exit of any process, not necessarily child
+//! processes. Due to platform limitations, the exit reason and status codes still cannot be
+//! retrieved.
 //!
 //! ## Implementation details
 //!
