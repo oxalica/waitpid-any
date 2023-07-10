@@ -13,12 +13,11 @@ jobs:
   outdated:
     name: Outdated
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install cargo-outdated
         uses: dtolnay/install@cargo-outdated
       - name: cargo-outdated
-        run: |
-          rm -f Cargo.lock # Ignore trivially updatable compatible versions.
-          cargo outdated --workspace --exit-code 1
+        run: cargo outdated --exit-code 1
