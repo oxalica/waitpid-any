@@ -74,7 +74,7 @@ impl WaitHandle {
         Ok(Self(imp::open(pid)?))
     }
 
-    /// Blocks until the target process exits, and then returns `Ok(())`.
+    /// Blocks until the target process exits.
     ///
     /// # Errors
     ///
@@ -84,13 +84,14 @@ impl WaitHandle {
         Ok(())
     }
 
-    /// Blocks until the target process exits, and then returns `Ok(Some(()))`.
-    /// If the process is not exited in `timeout`, it returns `None`.
+    /// Blocks until the target process exits, or timeout.
+    ///
+    /// If the process exited in time, `Ok(Some(()))` is returned immediately when the event
+    /// triggers. If it is not exited in `timeout`, `Ok(None)` is returned.
     ///
     /// # Errors
     ///
-    /// Fails when the underlying syscall fails, or the process is still not exited after
-    /// `timeout` elapsed.
+    /// Fails when the underlying syscall fails.
     pub fn wait_timeout(&mut self, timeout: Duration) -> Result<Option<()>> {
         imp::wait(&mut self.0, Some(timeout))
     }
