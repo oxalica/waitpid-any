@@ -2,6 +2,7 @@
 name = "waitpid-any"
 version = "0.1.0"
 edition = "2021"
+# Keep in sync with CI!
 rust-version = "1.63"
 description = "Wait for any PID, an extension to waitpid(2)"
 categories = ["api-bindings", "os::unix-apis", "os::windows-apis"]
