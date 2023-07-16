@@ -9,6 +9,13 @@ categories = ["api-bindings", "os::unix-apis", "os::windows-apis"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/oxalica/waitpid-any"
 keywords = ["process", "pidfd", "kqueue", "wait", "waitpid"]
+include = [
+    "/Cargo.toml",
+    "/LICENSE-APACHE",
+    "/LICENSE-MIT",
+    "/README.md",
+    "/src/**",
+]
 
 # This can be more precise but unsupported platforms will fail to compile anyway.
 [target.'cfg(unix)'.dependencies]
