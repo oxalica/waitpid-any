@@ -80,7 +80,8 @@ impl WaitHandle {
     ///
     /// # Errors
     ///
-    /// Fails when the underlying syscall fails.
+    /// Fails when the underlying syscall fails. For *NIX platforms, `EINTR` may be returned in
+    /// case of signals.
     pub fn wait(&mut self) -> Result<()> {
         imp::wait(&mut self.0, None)?.expect("no timeout");
         Ok(())
@@ -94,7 +95,8 @@ impl WaitHandle {
     ///
     /// # Errors
     ///
-    /// Fails when the underlying syscall fails.
+    /// Fails when the underlying syscall fails. For *NIX platforms, `EINTR` may be returned in
+    /// case of signals.
     pub fn wait_timeout(&mut self, timeout: Duration) -> Result<Option<()>> {
         imp::wait(&mut self.0, Some(timeout))
     }

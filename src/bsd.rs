@@ -2,7 +2,6 @@ use std::io::{Error, ErrorKind, Result};
 use std::time::Duration;
 
 use rustix::event::kqueue::{kevent, kqueue, Event, EventFilter, EventFlags, ProcessEvents};
-use rustix::io::retry_on_intr;
 use rustix::process::Pid;
 
 // KQueue only emits the event once. So we will store the exited state to make `wait` returns
@@ -38,7 +37,7 @@ pub fn wait(handle: &mut WaitHandle, timeout: Option<Duration>) -> Result<Option
     };
 
     let mut buf = Vec::with_capacity(1);
-    let ret = unsafe { retry_on_intr(|| kevent(&kqueue, &[], &mut buf, timeout)) };
+    let ret = unsafe { kevent(&kqueue, &[], &mut buf, timeout) };
     match ret {
         // Timeout.
         Ok(0) => Ok(None),

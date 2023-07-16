@@ -2,7 +2,6 @@ use std::io::{Error, ErrorKind, Result};
 use std::time::Duration;
 
 use rustix::event::{poll, PollFd, PollFlags};
-use rustix::io::retry_on_intr;
 use rustix::process::{pidfd_open, Pid, PidfdFlags};
 
 pub type WaitHandle = rustix::fd::OwnedFd;
@@ -20,7 +19,7 @@ pub fn wait(pidfd: &mut WaitHandle, timeout: Option<Duration>) -> Result<Option<
         None => -1, // Infinite.
     };
     let mut fds = [PollFd::new(&pidfd, PollFlags::IN)];
-    let ret = retry_on_intr(|| poll(&mut fds, timeout))?;
+    let ret = poll(&mut fds, timeout)?;
     if ret == 0 {
         return Ok(None);
     }
