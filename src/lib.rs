@@ -76,6 +76,8 @@ impl WaitHandle {
 
     /// Blocks until the target process exits.
     ///
+    /// Once the the target process exits, all following calls return `Ok(())` immediately.
+    ///
     /// # Errors
     ///
     /// Fails when the underlying syscall fails.
@@ -88,6 +90,7 @@ impl WaitHandle {
     ///
     /// If the process exited in time, `Ok(Some(()))` is returned immediately when the event
     /// triggers. If it is not exited in `timeout`, `Ok(None)` is returned.
+    /// Once the the target process exits, all following calls return `Ok(())` immediately.
     ///
     /// # Errors
     ///
