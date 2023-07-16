@@ -46,7 +46,7 @@ fn invalid() {
 
 #[test]
 fn non_existing() {
-    WaitHandle::open(0xDEAD).expect_err("should not exist");
+    WaitHandle::open(0).expect_err("should not exist");
 }
 
 // Only Linux and Windows support opening zombie processes.
