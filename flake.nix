@@ -13,7 +13,7 @@
         };
       in pkgs.mkShell {
         nativeBuildInputs = [
-          (pkgs.rust-bin.fromRustupToolchain ./rust-toolchain.toml.example)
+          (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml.example)
         ];
       };
     };
