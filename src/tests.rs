@@ -192,11 +192,28 @@ fn non_child() {
     #[cfg(unix)]
     rustix::process::kill_process(rustix_pid, rustix::process::Signal::Term).unwrap();
     #[cfg(windows)]
-    assert!(Command::new("taskkill")
-        .args(["/f", "/pid", &raw_pid.to_string()])
-        .status()
-        .unwrap()
-        .success());
+    unsafe {
+        use windows_sys::Win32::Foundation::CloseHandle;
+        use windows_sys::Win32::System::Threading::{
+            OpenProcess, TerminateProcess, PROCESS_TERMINATE,
+        };
+
+        let hprocess = OpenProcess(PROCESS_TERMINATE, 0 /* No inherit */, raw_pid as u32);
+        if hprocess == 0 {
+            panic!(
+                "failed to open process: {}",
+                std::io::Error::last_os_error()
+            );
+        }
+        let ret = TerminateProcess(hprocess, 1);
+        if ret == 0 {
+            panic!(
+                "failed to terminate process: {}",
+                std::io::Error::last_os_error()
+            );
+        }
+        CloseHandle(hprocess);
+    }
 
     wait_thread
         .join()
