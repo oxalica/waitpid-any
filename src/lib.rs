@@ -20,6 +20,8 @@
 //! - On *BSD, including macOS,
 //!   [`kqueue(2)`](https://man.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2) is used.
 //! - Other platforms are not supported currently.
+#![warn(missing_debug_implementations)]
+#![warn(missing_docs)]
 use std::io::Result;
 use std::time::Duration;
 
