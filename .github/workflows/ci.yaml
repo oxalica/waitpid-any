@@ -45,4 +45,5 @@ jobs:
       - name: Install Clippy
         uses: dtolnay/rust-toolchain@clippy
       - name: Clippy
-        run: cargo clippy --all-targets
+        # Workaround: https://github.com/rust-lang/rust-clippy/issues/11185
+        run: cargo clippy --all-targets -- -Aclippy::needless_pass_by_ref_mut
