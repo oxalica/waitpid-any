@@ -3,7 +3,7 @@
 //! [`waitpid(2)`](https://pubs.opengroup.org/onlinepubs/9699919799/functions/wait.html) can only
 //! be used to wait for direct child processes, or it fails immediately.
 //!
-//! This crate provides a extention to wait for the exit of any process, not necessarily child
+//! This crate provides a extension to wait for the exit of any process, not necessarily child
 //! processes. Due to platform limitations, the exit reason and status codes still cannot be
 //! retrieved.
 //!
@@ -93,7 +93,7 @@ impl WaitHandle {
     ///
     /// If the process exited in time, `Ok(Some(()))` is returned immediately when the event
     /// triggers. If it is not exited in `timeout`, `Ok(None)` is returned.
-    /// Once the the target process exits, all following calls return `Ok(())` immediately.
+    /// Once the the target process exits, all following calls return `Ok(Some(()))` immediately.
     ///
     /// # Errors
     ///
