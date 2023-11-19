@@ -3,6 +3,8 @@ on:
   schedule:
     - cron: '52 1 * * 0' # Sun *-*-* 01:52:00 UTC
 
+  workflow_dispatch:
+
 permissions:
   contents: read
 
@@ -20,4 +22,4 @@ jobs:
       - name: Install cargo-outdated
         uses: dtolnay/install@cargo-outdated
       - name: cargo-outdated
-        run: cargo outdated --exit-code 1
+        run: rm -f Cargo.lock && cargo outdated --exit-code 1
