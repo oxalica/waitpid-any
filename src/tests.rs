@@ -67,6 +67,8 @@ fn zombie() {
     // So it is still an unreaped zombie.
     let mut stdout = child.stdout.take().unwrap();
     loop {
+        // Workaround: https://github.com/rust-lang/rust-clippy/issues/12208
+        #[allow(clippy::unused_io_amount)]
         match stdout.read(&mut [0u8]) {
             Ok(0) => break,
             Ok(_) => unreachable!(),
