@@ -3,7 +3,7 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
 
-use super::*;
+use crate::WaitHandle;
 
 // Prevent process leaking when something goes wrong.
 const FUSE_DURATION_SEC: u32 = 60;
@@ -66,8 +66,6 @@ fn zombie() {
     // Wait the the children to exit without explicit `wait`.
     // So it is still an unreaped zombie.
     let mut stdout = child.stdout.take().unwrap();
-    // Workaround: https://github.com/rust-lang/rust-clippy/issues/12208
-    #[allow(clippy::unused_io_amount)]
     loop {
         match stdout.read(&mut [0u8]) {
             Ok(0) => break,

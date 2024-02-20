@@ -45,8 +45,7 @@ jobs:
       - name: Install Clippy
         uses: dtolnay/rust-toolchain@clippy
       - name: Clippy
-        # Workaround: https://github.com/rust-lang/rust-clippy/issues/11185
-        run: cargo clippy --all-targets -- -Aclippy::needless_pass_by_ref_mut
+        run: cargo clippy --all-targets
 
   minimal:
     timeout-minutes: 15

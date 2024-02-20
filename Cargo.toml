@@ -23,3 +23,8 @@ rustix = { version = "0.38", default-features = false, features = ["event", "pro
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.52", features = ["Win32_Foundation", "Win32_System_Threading"] }
+
+[lints]
+clippy.pedantic = "warn"
+# Workaround: https://github.com/rust-lang/rust-clippy/issues/11436
+clippy.missing-panics-doc = "allow"
