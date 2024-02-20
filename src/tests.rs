@@ -179,12 +179,11 @@ fn non_child() {
 
     // Wait for some time to make sure no unexpected returns.
     thread::sleep(WAIT_DURATION);
-    if wait_thread.is_finished() {
-        panic!(
-            "Returned while the process still alive: {:?}",
-            wait_thread.join(),
-        );
-    }
+    assert!(
+        !wait_thread.is_finished(),
+        "Returned while the process still alive: {:?}",
+        wait_thread.join(),
+    );
 
     let inst = Instant::now();
 

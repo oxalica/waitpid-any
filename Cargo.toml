@@ -24,7 +24,10 @@ rustix = { version = "0.38", default-features = false, features = ["event", "pro
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.52", features = ["Win32_Foundation", "Win32_System_Threading"] }
 
-[lints]
-clippy.pedantic = "warn"
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
 # Workaround: https://github.com/rust-lang/rust-clippy/issues/11436
-clippy.missing-panics-doc = "allow"
+missing-panics-doc = "allow"
+# `pid_t` is defiend as signed integer but Rust std uses `u32`.
+cast-sign-loss = "allow"
+cast-possible-wrap = "allow"
