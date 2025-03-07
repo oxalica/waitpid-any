@@ -13,6 +13,10 @@ const FUSE_DURATION_SEC: u32 = 60;
 const WAIT_DURATION: Duration = Duration::from_secs(1);
 const TOLERANCE: Duration = Duration::from_millis(500);
 
+fn _assert_wait_handle_send(h: WaitHandle) -> impl Send {
+    h
+}
+
 fn command_for_targets(unix_args: &[&str], windows_args: &[&str]) -> Command {
     let args = if cfg!(unix) {
         unix_args
@@ -202,7 +206,7 @@ fn non_child() {
         };
 
         let hprocess = OpenProcess(PROCESS_TERMINATE, 0 /* No inherit */, raw_pid as u32);
-        if hprocess == 0 {
+        if hprocess.is_null() {
             panic!(
                 "failed to open process: {}",
                 std::io::Error::last_os_error()

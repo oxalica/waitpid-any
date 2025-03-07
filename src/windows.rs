@@ -12,6 +12,9 @@ use windows_sys::Win32::System::Threading::{
 #[derive(Debug)]
 pub struct WaitHandle(NonNull<c_void>);
 
+// SAFETY: HANDLE is transferrable and `wait()` takes a exclusive reference that prevents racing.
+unsafe impl Send for WaitHandle {}
+
 impl Drop for WaitHandle {
     fn drop(&mut self) {
         let _ = unsafe { CloseHandle(self.0.as_ptr()) };
