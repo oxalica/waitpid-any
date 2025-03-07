@@ -84,6 +84,8 @@ impl WaitHandle {
     ///
     /// Fails when the underlying syscall fails. For *NIX platforms, `EINTR` may be returned in
     /// case of signals.
+    // WAIT: https://github.com/rust-lang/rust-clippy/issues/11436
+    #[allow(clippy::missing_panics_doc)]
     pub fn wait(&mut self) -> Result<()> {
         imp::wait(&mut self.0, None)?.expect("no timeout");
         Ok(())

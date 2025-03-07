@@ -26,11 +26,3 @@ windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_System_
 
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
-# Workaround: https://github.com/rust-lang/rust-clippy/issues/11436
-missing-panics-doc = "allow"
-# `pid_t` is defiend as signed integer but Rust std uses `u32`.
-cast-sign-loss = "allow"
-cast-possible-wrap = "allow"
-
-# Workaround: https://github.com/rust-lang/rust-clippy/issues/12208#issuecomment-2014353659
-unused-io-amount = "allow"

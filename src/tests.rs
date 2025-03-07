@@ -1,3 +1,6 @@
+// `pid_t` and Rust's PID type diff in sign.
+#![allow(clippy::cast_sign_loss)]
+#![allow(clippy::cast_possible_wrap)]
 use std::io::{BufRead, BufReader};
 use std::process::{Command, Stdio};
 use std::thread;
@@ -146,6 +149,7 @@ fn non_child() {
     .spawn()
     .unwrap();
 
+    // Get the output but keep the zombie to hold direct child's PID.
     let raw_pid = {
         let mut buf = String::new();
         BufReader::new(child.stdout.as_mut().unwrap())
@@ -220,4 +224,7 @@ fn non_child() {
         .expect("must succeed");
     let elapsed = inst.elapsed();
     assert!(elapsed < TOLERANCE, "Wait for too long? {elapsed:?}");
+
+    // Reap the direct child.
+    child.wait().unwrap();
 }
