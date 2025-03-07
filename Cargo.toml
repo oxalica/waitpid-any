@@ -19,10 +19,10 @@ include = [
 
 # This can be more precise but unsupported platforms will fail to compile anyway.
 [target.'cfg(unix)'.dependencies]
-rustix = { version = "0.38", default-features = false, features = ["event", "process", "std"] }
+rustix = { version = "1", default-features = false, features = ["event", "process", "std"] }
 
 [target.'cfg(windows)'.dependencies]
-windows-sys = { version = "0.52", features = ["Win32_Foundation", "Win32_System_Threading"] }
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_System_Threading"] }
 
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }

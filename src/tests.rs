@@ -189,7 +189,7 @@ fn non_child() {
 
     // Kill the grandchild, and it should return in time.
     #[cfg(unix)]
-    rustix::process::kill_process(rustix_pid, rustix::process::Signal::Term).unwrap();
+    rustix::process::kill_process(rustix_pid, rustix::process::Signal::TERM).unwrap();
     #[cfg(windows)]
     unsafe {
         use windows_sys::Win32::Foundation::CloseHandle;

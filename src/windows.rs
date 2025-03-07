@@ -1,5 +1,6 @@
+use std::ffi::c_void;
 use std::io::{Error, Result};
-use std::num::NonZeroIsize;
+use std::ptr::NonNull;
 use std::time::Duration;
 
 use windows_sys::Win32::Foundation::{CloseHandle, WAIT_OBJECT_0, WAIT_TIMEOUT};
@@ -7,15 +8,13 @@ use windows_sys::Win32::System::Threading::{
     OpenProcess, WaitForSingleObject, INFINITE, PROCESS_SYNCHRONIZE,
 };
 
-// windows_sys::Win32::Foundation::HANDLE = isize
+// windows_sys::Win32::Foundation::HANDLE = *mut c_void
 #[derive(Debug)]
-pub struct WaitHandle(NonZeroIsize);
+pub struct WaitHandle(NonNull<c_void>);
 
 impl Drop for WaitHandle {
     fn drop(&mut self) {
-        unsafe {
-            let _ = CloseHandle(self.0.get());
-        }
+        let _ = unsafe { CloseHandle(self.0.as_ptr()) };
     }
 }
 
@@ -23,7 +22,7 @@ pub fn open(pid: i32) -> Result<WaitHandle> {
     let hprocess = unsafe {
         OpenProcess(PROCESS_SYNCHRONIZE, 0 /* No inherit */, pid as u32)
     };
-    let hprocess = NonZeroIsize::new(hprocess).ok_or_else(Error::last_os_error)?;
+    let hprocess = NonNull::new(hprocess).ok_or_else(Error::last_os_error)?;
     Ok(WaitHandle(hprocess))
 }
 
@@ -40,7 +39,7 @@ pub fn wait(hprocess: &mut WaitHandle, timeout: Option<Duration>) -> Result<Opti
             .min(INFINITE - 1),
         None => INFINITE,
     };
-    let ret = unsafe { WaitForSingleObject(hprocess.0.get(), timeout) };
+    let ret = unsafe { WaitForSingleObject(hprocess.0.as_ptr(), timeout) };
     match ret {
         WAIT_OBJECT_0 => Ok(Some(())),
         WAIT_TIMEOUT => Ok(None),

@@ -1,4 +1,5 @@
 use std::io::{Error, ErrorKind, Result};
+use std::mem::MaybeUninit;
 use std::time::Duration;
 
 use rustix::event::kqueue::{kevent, kqueue, Event, EventFilter, EventFlags, ProcessEvents};
@@ -22,11 +23,10 @@ pub fn open(pid: i32) -> Result<WaitHandle> {
             flags: ProcessEvents::EXIT,
         },
         EventFlags::ADD,
-        0,
+        std::ptr::null_mut(),
     );
-    unsafe {
-        kevent(&kqueue, &[event], &mut Vec::new(), None)?;
-    }
+    let ret = unsafe { kevent::<_, &mut [Event; 0]>(&kqueue, &[event], &mut [], None)? };
+    debug_assert_eq!(ret, 0);
     Ok(WaitHandle::KQueue(kqueue))
 }
 
@@ -36,18 +36,19 @@ pub fn wait(handle: &mut WaitHandle, timeout: Option<Duration>) -> Result<Option
         WaitHandle::Exited => return Ok(Some(())),
     };
 
-    let mut buf = Vec::with_capacity(1);
-    let ret = unsafe { kevent(&kqueue, &[], &mut buf, timeout) };
-    match ret {
-        // Timeout.
-        Ok(0) => Ok(None),
-        // Exited.
-        Ok(_) => {
-            // Fuse the handle.
-            *handle = WaitHandle::Exited;
-            Ok(Some(()))
-        }
-        // Something went wrong. Events should not be consumed here.
-        Err(err) => Err(err.into()),
+    let mut buf = [MaybeUninit::uninit()];
+    let (events, _rest_buf) = unsafe { kevent(&kqueue, &[], &mut buf, timeout)? };
+    // Timeout.
+    if events.is_empty() {
+        return Ok(None);
     }
+
+    // Process exited. Fuse the handle.
+    debug_assert!(matches!(
+        events[0].filter(),
+        EventFilter::Proc { flags, .. }
+        if flags.contains(ProcessEvents::EXIT)
+    ));
+    *handle = WaitHandle::Exited;
+    Ok(Some(()))
 }
