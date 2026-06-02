@@ -19,6 +19,7 @@
 //!   are used.
 //! - On *BSD, including macOS,
 //!   [`kqueue(2)`](https://man.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2) is used.
+//! - On Haiku, `get_team_info` & `wait_for_objects` is used.
 //! - Other platforms are not supported currently.
 #![warn(missing_debug_implementations)]
 #![warn(missing_docs)]
@@ -40,6 +41,10 @@ mod imp;
 
 #[cfg(windows)]
 #[path = "./windows.rs"]
+mod imp;
+
+#[cfg(target_os = "haiku")]
+#[path = "./haiku.rs"]
 mod imp;
 
 #[cfg(test)]
