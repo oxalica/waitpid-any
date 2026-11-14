@@ -24,5 +24,8 @@ rustix = { version = "1", default-features = false, features = ["event", "proces
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Threading"] }
 
+[target.'cfg(target_os = "haiku")'.dependencies]
+libc = { version = "0.2" }
+
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }

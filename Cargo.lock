@@ -47,6 +47,7 @@ dependencies = [
 name = "waitpid-any"
 version = "0.3.1"
 dependencies = [
+ "libc",
  "rustix",
  "windows-sys",
 ]
