@@ -1,9 +1,9 @@
 [package]
 name = "waitpid-any"
 version = "0.3.0"
-edition = "2021"
+edition = "2024"
 # Keep in sync with CI!
-rust-version = "1.63"
+rust-version = "1.85" # edition 2024
 description = "Wait for any PID, an extension to waitpid(2)"
 categories = ["api-bindings", "os::unix-apis", "os::windows-apis"]
 license = "MIT OR Apache-2.0"
