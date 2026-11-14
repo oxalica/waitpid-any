@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use windows_sys::Win32::Foundation::{CloseHandle, WAIT_OBJECT_0, WAIT_TIMEOUT};
 use windows_sys::Win32::System::Threading::{
-    OpenProcess, WaitForSingleObject, INFINITE, PROCESS_SYNCHRONIZE,
+    INFINITE, OpenProcess, PROCESS_SYNCHRONIZE, WaitForSingleObject,
 };
 
 // windows_sys::Win32::Foundation::HANDLE = *mut c_void

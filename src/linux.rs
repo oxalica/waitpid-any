@@ -1,9 +1,9 @@
 use std::io::{Error, ErrorKind, Result};
 use std::time::Duration;
 
-use rustix::event::{poll, PollFd, PollFlags};
+use rustix::event::{PollFd, PollFlags, poll};
 use rustix::io::Errno;
-use rustix::process::{pidfd_open, Pid, PidfdFlags};
+use rustix::process::{Pid, PidfdFlags, pidfd_open};
 
 pub type WaitHandle = rustix::fd::OwnedFd;
 

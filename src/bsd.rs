@@ -2,7 +2,7 @@ use std::io::{Error, ErrorKind, Result};
 use std::mem::MaybeUninit;
 use std::time::Duration;
 
-use rustix::event::kqueue::{kevent, kqueue, Event, EventFilter, EventFlags, ProcessEvents};
+use rustix::event::kqueue::{Event, EventFilter, EventFlags, ProcessEvents, kevent, kqueue};
 use rustix::process::Pid;
 
 // KQueue only emits the event once. So we will store the exited state to make `wait` returns

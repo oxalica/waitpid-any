@@ -167,7 +167,7 @@ fn non_child() {
     #[cfg(unix)]
     let rustix_pid = {
         use rustix::io::Errno;
-        use rustix::process::{waitpid, Pid, WaitOptions};
+        use rustix::process::{Pid, WaitOptions, waitpid};
 
         let pid = Pid::from_raw(raw_pid).unwrap();
         assert_eq!(
@@ -199,7 +199,7 @@ fn non_child() {
     unsafe {
         use windows_sys::Win32::Foundation::CloseHandle;
         use windows_sys::Win32::System::Threading::{
-            OpenProcess, TerminateProcess, PROCESS_TERMINATE,
+            OpenProcess, PROCESS_TERMINATE, TerminateProcess,
         };
 
         let hprocess = OpenProcess(PROCESS_TERMINATE, 0 /* No inherit */, raw_pid as u32);
